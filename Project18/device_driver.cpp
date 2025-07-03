@@ -9,7 +9,8 @@ int DeviceDriver::read(long address)
     int readValue = (int)(m_hardware->read(address));
     for (int i = 0; i < 4; i++) {
         int repeatedReadValue = (int)(m_hardware->read(address));
-        if (repeatedReadValue != readValue) throw std::runtime_error("Read value is different. Error!");;
+        if (repeatedReadValue != readValue)
+            throw std::runtime_error("Read value is different. Error!");;
     }
     return readValue;
 }
