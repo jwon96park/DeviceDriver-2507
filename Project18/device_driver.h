@@ -17,6 +17,8 @@ public:
     void posetConditionCheck(long address, int readValue);
     void write(long address, int data);
 
+    bool isWritable(int readValue);
+
 protected:
     FlashMemoryDevice* m_hardware;
     const int REPEAT_NUM = 4;

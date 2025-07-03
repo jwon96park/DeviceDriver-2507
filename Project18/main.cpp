@@ -54,7 +54,10 @@ TEST_F(DDFixture, 5TimesReadButExcept) {
 TEST_F(DDFixture, WriteNormal) {
 	// TODO : replace hardware with a Test Double
 	EXPECT_CALL(hardware, read(0xAA))
+		.Times(1)
 		.WillRepeatedly(Return(0xFF));
+	EXPECT_CALL(hardware, write(0xAA, _))
+		.Times(1);
 	driver.write(0xAA, 5);
 }
 
