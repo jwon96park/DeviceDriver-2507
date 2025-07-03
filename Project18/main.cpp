@@ -1,7 +1,9 @@
 #include "gmock/gmock.h"
 #include "device_driver.h"
+#include <string>
 
 using namespace testing;
+using std::string;
 
 class MockFlash :public FlashMemoryDevice {
 public:
@@ -27,6 +29,22 @@ TEST(DeviceDriver, 5TimesRead) {
 		.Times(5);
 	DeviceDriver driver{ &hardware };
 	int data = driver.read(0xFF);
+}
+
+TEST(DeviceDriver, 5TimesReadButExcept) {
+	// TODO : replace hardware with a Test Double
+	MockFlash hardware;
+	EXPECT_CALL(hardware, read(0xFF))
+		.WillOnce(Return(0))
+		.WillRepeatedly(Return(1));
+	DeviceDriver driver{ &hardware };
+	try {
+		int data = driver.read(0xFF);
+		FAIL();
+	}
+	catch (std::runtime_error& e) {
+		EXPECT_EQ(string{ e.what() }, string{ "Read value is different. Error!" });
+	}
 }
 
 int main() {
