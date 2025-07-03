@@ -1,5 +1,4 @@
 #include "device_driver.h"
-#include <stdexcept>
 
 DeviceDriver::DeviceDriver(FlashMemoryDevice* hardware) : m_hardware(hardware)
 {}
@@ -16,7 +15,7 @@ void DeviceDriver::posetConditionCheck(const long address, const int readValue)
     for (int turn = 1; turn <= REPEAT_NUM; turn++) {
         int repeatedReadValue = (int)(m_hardware->read(address));
         if (repeatedReadValue != readValue)
-            throw std::runtime_error("Read value is different. Error!");;
+            throw ReadFailException();
     }
 }
 

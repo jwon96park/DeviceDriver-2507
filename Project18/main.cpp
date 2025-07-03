@@ -44,7 +44,7 @@ TEST_F(DDFixture, 5TimesReadButExcept) {
 		int data = driver.read(0xFF);
 		FAIL();
 	}
-	catch (std::runtime_error& e) {
+	catch (ReadFailException& e) {
 		EXPECT_EQ(string{ e.what() }, string{ "Read value is different. Error!" });
 	}
 }

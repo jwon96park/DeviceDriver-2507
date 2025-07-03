@@ -1,5 +1,13 @@
 #pragma once
 #include "flash_memory_device.h"
+#include <stdexcept>
+
+class ReadFailException : public std::exception {
+public:
+    char const* what() const override {
+        return "Read value is different. Error!";
+    }
+};
 
 class DeviceDriver
 {
