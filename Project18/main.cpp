@@ -87,6 +87,16 @@ TEST_F(DDFixture, AppRead) {
 	app.readAndPrint(0xA0, 0xA4);
 }
 
+TEST_F(DDFixture, AppWrite) {
+	EXPECT_CALL(hardware, read(_))
+		.Times(5)
+		.WillRepeatedly(Return(0xFF));
+	EXPECT_CALL(hardware, write(_, _))
+		.Times(5);
+	Applicaiton app{&driver};
+	app.writeAll(1);
+}
+
 int main() {
 	::testing::InitGoogleMock();
 	return RUN_ALL_TESTS();

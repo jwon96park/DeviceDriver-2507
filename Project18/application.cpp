@@ -12,6 +12,12 @@ public:
 			std::cout << driver->read(addr);
 		}
 	}
+
+	void writeAll(const int value) {
+		for (int addr = 0x00; addr <= 0x04; addr++) {
+			driver->write(addr, value);
+		}
+	}
 private:
 	DeviceDriver* driver;
 };
