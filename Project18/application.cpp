@@ -8,7 +8,7 @@ public:
 		: driver{ driver } { }
 
 	void readAndPrint(const int startAddr, const int endAddr) {
-		for (int addr = startAddr; addr < endAddr; addr++) {
+		for (int addr = startAddr; addr <= endAddr; addr++) {
 			std::cout << driver->read(addr);
 		}
 	}

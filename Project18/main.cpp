@@ -18,9 +18,10 @@ protected:
 
 	MockFlash hardware;
 	DeviceDriver driver;
+	Applicaiton app;
 public:
 
-	DDFixture() :driver{ &hardware } {};
+	DDFixture() :driver{ &hardware }, app{&driver} {};
 };
 
 TEST_F(DDFixture, ReadFromHW) {
@@ -81,9 +82,8 @@ TEST_F(DDFixture, WriteException) {
 
 TEST_F(DDFixture, AppRead) {
 	EXPECT_CALL(hardware, read(_))
-		.Times(20)
+		.Times(25)
 		.WillRepeatedly(Return(0xFA));
-	Applicaiton app{&driver};
 	app.readAndPrint(0xA0, 0xA4);
 }
 
@@ -93,7 +93,6 @@ TEST_F(DDFixture, AppWrite) {
 		.WillRepeatedly(Return(0xFF));
 	EXPECT_CALL(hardware, write(_, _))
 		.Times(5);
-	Applicaiton app{&driver};
 	app.writeAll(1);
 }
 
