@@ -79,7 +79,7 @@ TEST_F(DDFixture, WriteException) {
 	}
 }
 
-TEST_F(DDFixture, TC1) {
+TEST_F(DDFixture, AppRead) {
 	EXPECT_CALL(hardware, read(_))
 		.Times(20)
 		.WillRepeatedly(Return(0xFA));
