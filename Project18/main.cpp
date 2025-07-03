@@ -1,5 +1,6 @@
 #include "gmock/gmock.h"
 #include "device_driver.h"
+#include "application.cpp"
 #include <string>
 
 using namespace testing;
@@ -76,6 +77,14 @@ TEST_F(DDFixture, WriteException) {
 	catch (WriteFailException& e) {
 		EXPECT_EQ(string{ e.what() }, string{ "There is another value already. Error!" });
 	}
+}
+
+TEST_F(DDFixture, TC1) {
+	EXPECT_CALL(hardware, read(_))
+		.Times(20)
+		.WillRepeatedly(Return(0xFA));
+	Applicaiton app{&driver};
+	app.readAndPrint(0xA0, 0xA4);
 }
 
 int main() {
