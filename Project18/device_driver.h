@@ -24,7 +24,7 @@ public:
     void posetConditionCheck(long address, int readValue);
     void write(long address, int data);
 
-    bool isWritable(int readValue);
+    bool isNotWritable(int readValue);
 
 protected:
     FlashMemoryDevice* m_hardware;
