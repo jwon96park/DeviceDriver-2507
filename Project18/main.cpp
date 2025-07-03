@@ -1,5 +1,6 @@
 #include "gmock/gmock.h"
 #include "device_driver.h"
+#include "application.cpp"
 #include <string>
 
 using namespace testing;
@@ -17,9 +18,10 @@ protected:
 
 	MockFlash hardware;
 	DeviceDriver driver;
+	Applicaiton app;
 public:
 
-	DDFixture() :driver{ &hardware } {};
+	DDFixture() :driver{ &hardware }, app{&driver} {};
 };
 
 TEST_F(DDFixture, ReadFromHW) {
@@ -76,6 +78,22 @@ TEST_F(DDFixture, WriteException) {
 	catch (WriteFailException& e) {
 		EXPECT_EQ(string{ e.what() }, string{ "There is another value already. Error!" });
 	}
+}
+
+TEST_F(DDFixture, AppRead) {
+	EXPECT_CALL(hardware, read(_))
+		.Times(25)
+		.WillRepeatedly(Return(0xFA));
+	app.readAndPrint(0xA0, 0xA4);
+}
+
+TEST_F(DDFixture, AppWrite) {
+	EXPECT_CALL(hardware, read(_))
+		.Times(5)
+		.WillRepeatedly(Return(0xFF));
+	EXPECT_CALL(hardware, write(_, _))
+		.Times(5);
+	app.writeAll(1);
 }
 
 int main() {
