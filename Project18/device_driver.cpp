@@ -1,12 +1,17 @@
 #include "device_driver.h"
+#include <stdexcept>
 
 DeviceDriver::DeviceDriver(FlashMemoryDevice* hardware) : m_hardware(hardware)
 {}
 
 int DeviceDriver::read(long address)
 {
-    // TODO: implement this method properly
-    return (int)(m_hardware->read(address));
+    int readValue = (int)(m_hardware->read(address));
+    for (int i = 0; i < 4; i++) {
+        int repeatedReadValue = (int)(m_hardware->read(address));
+        if (repeatedReadValue != readValue) throw std::runtime_error("Booking system is not available on sunday");;
+    }
+    return readValue;
 }
 
 void DeviceDriver::write(long address, int data)
