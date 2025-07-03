@@ -13,13 +13,17 @@ public:
 };
 
 class DDFixture : public Test {
-public:
+protected:
+
 	MockFlash hardware;
+	DeviceDriver driver;
+public:
+
+	DDFixture() :driver{ &hardware } {};
 };
 
 TEST_F(DDFixture, ReadFromHW) {
 	// TODO : replace hardware with a Test Double
-	DeviceDriver driver{ &hardware };
 	EXPECT_CALL(hardware, read(0xFF))
 		.WillRepeatedly(Return(0));
 	int data = driver.read(0xFF);
@@ -30,7 +34,6 @@ TEST_F(DDFixture, 5TimesRead) {
 	// TODO : replace hardware with a Test Double
 	EXPECT_CALL(hardware, read(0xFF))
 		.Times(5);
-	DeviceDriver driver{ &hardware };
 	int data = driver.read(0xFF);
 }
 
@@ -39,7 +42,6 @@ TEST_F(DDFixture, 5TimesReadButExcept) {
 	EXPECT_CALL(hardware, read(0xFF))
 		.WillOnce(Return(0))
 		.WillRepeatedly(Return(1));
-	DeviceDriver driver{ &hardware };
 	try {
 		int data = driver.read(0xFF);
 		FAIL();
@@ -47,6 +49,13 @@ TEST_F(DDFixture, 5TimesReadButExcept) {
 	catch (ReadFailException& e) {
 		EXPECT_EQ(string{ e.what() }, string{ "Read value is different. Error!" });
 	}
+}
+
+TEST_F(DDFixture, WriteNormal) {
+	// TODO : replace hardware with a Test Double
+	EXPECT_CALL(hardware, read(0xAA))
+		.WillRepeatedly(Return(0xFF));
+	driver.write(0xAA, 5);
 }
 
 int main() {

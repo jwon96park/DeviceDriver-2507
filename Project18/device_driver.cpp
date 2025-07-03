@@ -21,6 +21,7 @@ void DeviceDriver::posetConditionCheck(const long address, const int readValue)
 
 void DeviceDriver::write(long address, int data)
 {
-    // TODO: implement this method
-    m_hardware->write(address, (unsigned char)data);
+    int readValue = (int)(m_hardware->read(address));
+    if (readValue == 0xFF)
+        m_hardware->write(address, (unsigned char)data);
 }
