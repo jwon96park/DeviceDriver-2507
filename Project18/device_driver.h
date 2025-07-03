@@ -9,6 +9,13 @@ public:
     }
 };
 
+class WriteFailException : public std::exception {
+public:
+    char const* what() const override {
+        return "There is another value already. Error!";
+    }
+};
+
 class DeviceDriver
 {
 public:

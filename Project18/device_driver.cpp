@@ -24,6 +24,8 @@ void DeviceDriver::write(long address, int data)
     int readValue = (int)(m_hardware->read(address));
     if (isWritable(readValue))
         m_hardware->write(address, (unsigned char)data);
+    else
+        throw WriteFailException();
 }
 
 bool DeviceDriver::isWritable(const int readValue)
